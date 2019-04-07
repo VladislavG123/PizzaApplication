@@ -60,16 +60,51 @@ namespace PizzaApp.Console
                         switch (chouse)
                         {
                             case 1:
-                                // Вывод всех пицц и ввод ИД пиццы для покупки
                                 pizzasTableService = new PizzasTableService();
                                 foreach (var pizza in pizzasTableService.SelectPizzas())
                                 {
-                                    System.Console.WriteLine($"Id - {pizza.Id}");
+                                    System.Console.WriteLine($"Номер - {pizza.Id}");
                                     System.Console.WriteLine($"Название - {pizza.Name}");
                                     System.Console.WriteLine($"Ингредиенты - {pizza.Description}");
                                     System.Console.WriteLine($"Цена - {pizza.Cost}");
                                     System.Console.WriteLine($"Размер - {pizza.Size}");
                                     System.Console.WriteLine();
+                                }
+                                int pizzaNumber = 0;
+                                while (true)
+                                {
+                                    System.Console.WriteLine("Введите номер пиццы");    
+                                    if (int.TryParse(System.Console.ReadLine(), out int result))
+                                    {
+                                        foreach (var pizza in pizzasTableService.SelectPizzas())
+                                        {
+                                            if (pizza.Id == result)
+                                            {
+                                                pizzaNumber = result;
+                                                break;
+                                            }
+                                        }
+                                        if (pizzaNumber == 0)
+                                        {
+                                            System.Console.WriteLine("Пиццы с таким номером нет");
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        System.Console.WriteLine("Некорректный номер");
+                                    }
+                                }
+
+                                foreach (var basket in basketsTableService.SelectBaskets())
+                                {
+                                    if (basket.UserId == user.Id)
+                                    {
+                                        basketsAndPizzasTableService.InsertValues(basket.Id, pizzaNumber);
+                                    }
                                 }
                                 break;
                             case 2:
@@ -216,7 +251,7 @@ namespace PizzaApp.Console
 
             System.Console.WriteLine("Отлично, вы прошли процедуру регистрации!");
 
-            return new User
+            User user = new User
             {
                 Login = login,
                 FullName = name,
@@ -224,7 +259,17 @@ namespace PizzaApp.Console
                 PhoneNumber = number,
                 Money = 0
             };
-
+            usersTableService.InsertUser(user);
+            int userId;
+            foreach (var obj in usersTableService.SelectUsers())
+            {
+                if (obj.Login == user.Login && obj.Password == user.Password)
+                {
+                    userId = obj.Id;
+                    basketsTableService.InsertBasket(new Basket { UserId = userId });
+                }
+            }
+            return user;
         }
 
 

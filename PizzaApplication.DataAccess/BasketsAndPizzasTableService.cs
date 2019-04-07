@@ -55,7 +55,7 @@ namespace PizzaApplication.DataAccess
             return data;
         }
 
-        public void InsertValues(int basketId, int userId)
+        public void InsertValues(int basketId, int pizzaId)
         {
             using (var connection = new SqlConnection(_connectionString))
             using (var command = connection.CreateCommand())
@@ -75,7 +75,7 @@ namespace PizzaApplication.DataAccess
                     var pizzaIdParameter = new SqlParameter();
                     pizzaIdParameter.ParameterName = "@pizzaId";
                     pizzaIdParameter.SqlDbType = System.Data.SqlDbType.Int;
-                    pizzaIdParameter.SqlValue = userId;
+                    pizzaIdParameter.SqlValue = pizzaId;
 
                     command.Parameters.Add(basketIdParameter);
                     command.Parameters.Add(pizzaIdParameter);

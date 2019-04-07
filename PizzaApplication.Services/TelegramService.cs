@@ -1,11 +1,17 @@
 ﻿using PizzaApp.Services.Abstract;
 using Telegram.Bot;
+using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Args;
+using System.Text.RegularExpressions;
+using PizzaApp.Models;
+
 namespace PizzaApp.Services
 {
-    public class TelegramService : IRegistrationService
+    public class TelegramService
     {
-        public TelegramBotClient TelegramBot { get; set; }
+        public static TelegramBotClient TelegramBot { get; set; }
         readonly string _token;
+        public static User User { get; set; } = new User();
 
         public TelegramService()
         {
@@ -13,10 +19,57 @@ namespace PizzaApp.Services
             _token = "687100641:AAGsutNjTbKPXtIvrKM949hecqyM0o_Q0JM";
             TelegramBot = new TelegramBotClient(_token);
         }
-        public bool SendMessage(string phoneNumber)
+        public User GetUser()
         {
+            return User;
+        }
+        public User Start()
+        {
+            User user = new User();
+            TelegramBot.OnMessage += BotOnMessageReceived;
+            TelegramBot.StartReceiving(new UpdateType[] { UpdateType.Message });
+            return user;
+        }
 
-            return false;
+        private static async void BotOnMessageReceived(object sender, MessageEventArgs messageEventArgs)
+        {
+            Telegram.Bot.Types.Message msg = messageEventArgs.Message;
+            if (msg == null || msg.Type != MessageType.Text) return;
+
+            string answer = "";
+
+            if (msg.Text == "/help" || msg.Text == "/start")
+            {
+                answer = "Добро пожаловать в PizzaApplication!\nВводите данные в формате: \n/логин-[ЛОГИН] \n/имя-[ИМЯ] \n/пароль-[ПАРОЛЬ] \n/телефон-[ТЕЛЕФОН] \nНа пример: /логин-PizzaMaster777";
+            }
+            else if (msg.Text.Length > 8 && msg.Text.Substring(0, 7) == "/логин-" && User.Login is null)
+            {
+                User.Login = msg.Text.Substring(7);
+                answer = User.Login;
+            }
+            else if (msg.Text.Length > 9 && msg.Text.Substring(0, 8) == "/пароль-" && User.Password is null)
+            {
+                User.Password = msg.Text.Substring(8);
+                answer = User.Password;
+            }
+            else if (msg.Text.Length > 6 && msg.Text.Substring(0, 5) == "/имя-" && User.FullName is null)
+            {
+                User.FullName = msg.Text.Substring(5);
+                answer = User.FullName;
+            }
+            else if (msg.Text.Length > 10 && msg.Text.Substring(0, 9) == "/телефон-" && User.PhoneNumber is null)
+            {
+                User.PhoneNumber = msg.Text.Substring(9);
+                answer = User.PhoneNumber;
+            }
+            
+            else
+            {
+                answer = "Неверный ввод!";
+            }
+
+            await TelegramBot.SendTextMessageAsync(msg.Chat.Id, answer);
+
         }
     }
 }

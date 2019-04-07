@@ -69,6 +69,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PizzaApplication.Models\PizzaApplication.Models.csproj">
+      <Project>{DA67B5D5-FE03-4417-A9A7-E4C0C5DB8E4A}</Project>
+      <Name>PizzaApplication.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PizzaApplication.Services.Abstract\PizzaApplication.Services.Abstract.csproj">
       <Project>{EA53DAB3-174B-4C14-87A6-F5A83F2DF4E0}</Project>
       <Name>PizzaApplication.Services.Abstract</Name>

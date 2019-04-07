@@ -50,6 +50,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PizzaApplication.DataAccess\PizzaApplication.DataAccess.csproj">
+      <Project>{DE7A58E4-5A28-4A09-96F3-FCBEA325CB6F}</Project>
+      <Name>PizzaApplication.DataAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PizzaApplication.Models\PizzaApplication.Models.csproj">
       <Project>{DA67B5D5-FE03-4417-A9A7-E4C0C5DB8E4A}</Project>
       <Name>PizzaApplication.Models</Name>

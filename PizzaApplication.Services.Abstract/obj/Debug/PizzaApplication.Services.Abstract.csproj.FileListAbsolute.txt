@@ -4,3 +4,9 @@ C:\Users\Vlad\source\repos\PizzaApplication\PizzaApplication.Services.Abstract\o
 C:\Users\Vlad\source\repos\PizzaApplication\PizzaApplication.Services.Abstract\obj\Debug\PizzaApplication.Services.Abstract.csproj.CoreCompileInputs.cache
 C:\Users\Vlad\source\repos\PizzaApplication\PizzaApplication.Services.Abstract\obj\Debug\PizzaApplication.Services.Abstract.dll
 C:\Users\Vlad\source\repos\PizzaApplication\PizzaApplication.Services.Abstract\obj\Debug\PizzaApplication.Services.Abstract.pdb
+C:\Users\Vlad\Source\Repos\VladislavG123\PizzaApplication\PizzaApplication.Services.Abstract\bin\Debug\PizzaApplication.Services.Abstract.dll
+C:\Users\Vlad\Source\Repos\VladislavG123\PizzaApplication\PizzaApplication.Services.Abstract\bin\Debug\PizzaApplication.Services.Abstract.pdb
+C:\Users\Vlad\Source\Repos\VladislavG123\PizzaApplication\PizzaApplication.Services.Abstract\obj\Debug\PizzaApplication.Services.Abstract.csprojAssemblyReference.cache
+C:\Users\Vlad\Source\Repos\VladislavG123\PizzaApplication\PizzaApplication.Services.Abstract\obj\Debug\PizzaApplication.Services.Abstract.csproj.CoreCompileInputs.cache
+C:\Users\Vlad\Source\Repos\VladislavG123\PizzaApplication\PizzaApplication.Services.Abstract\obj\Debug\PizzaApplication.Services.Abstract.dll
+C:\Users\Vlad\Source\Repos\VladislavG123\PizzaApplication\PizzaApplication.Services.Abstract\obj\Debug\PizzaApplication.Services.Abstract.pdb

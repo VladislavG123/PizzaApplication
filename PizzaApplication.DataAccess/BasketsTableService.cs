@@ -21,7 +21,7 @@ namespace PizzaApplication.DataAccess
                                 Integrated Security=True";
         }
 
-        public List<Basket> SelectUsers()
+        public List<Basket> SelectBaskets()
         {
             var data = new List<Basket>();
 

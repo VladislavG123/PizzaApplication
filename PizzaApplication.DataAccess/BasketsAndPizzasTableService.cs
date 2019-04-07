@@ -36,9 +36,9 @@ namespace PizzaApplication.DataAccess
                     while (sqlDataReader.Read())
                     {
                         int basketId = (int)sqlDataReader["BasketId"];
-                        int userId = (int)sqlDataReader["UserId"];
+                        int pizzaId = (int)sqlDataReader["PizzaId"];
 
-                        int[] tmp = new int[] { basketId, userId};
+                        int[] tmp = new int[] { basketId, pizzaId};
 
                         data.Add(tmp);
                     }
@@ -65,20 +65,20 @@ namespace PizzaApplication.DataAccess
                     connection.Open();
                     transaction = connection.BeginTransaction();
 
-                    command.CommandText = "insert into Users values(@basketId, @userId)";
+                    command.CommandText = "insert into Users values(@basketId, @pizzaId)";
 
                     var basketIdParameter = new SqlParameter();
                     basketIdParameter.ParameterName = "@basketId";
                     basketIdParameter.SqlDbType = System.Data.SqlDbType.Int;
                     basketIdParameter.SqlValue = basketId;
 
-                    var userIdParameter = new SqlParameter();
-                    userIdParameter.ParameterName = "@userId";
-                    userIdParameter.SqlDbType = System.Data.SqlDbType.Int;
-                    userIdParameter.SqlValue = userId;
+                    var pizzaIdParameter = new SqlParameter();
+                    pizzaIdParameter.ParameterName = "@pizzaId";
+                    pizzaIdParameter.SqlDbType = System.Data.SqlDbType.Int;
+                    pizzaIdParameter.SqlValue = userId;
 
                     command.Parameters.Add(basketIdParameter);
-                    command.Parameters.Add(userIdParameter);
+                    command.Parameters.Add(pizzaIdParameter);
 
                     command.Transaction = transaction;
 

@@ -1,15 +1,17 @@
 ﻿using PizzaApp.Models;
 using PizzaApp.Services;
+using PizzaApplication.DataAccess;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PizzaApp.Console
 {
     class Program
     {
+        static UsersTableService usersTableService;
+        static BasketsTableService basketsTableService;
+        static BasketsAndPizzasTableService basketsAndPizzasTableService;
+        static PizzasTableService pizzasTableService;
 
         static void Main(string[] args)
         {
@@ -59,9 +61,49 @@ namespace PizzaApp.Console
                         {
                             case 1:
                                 // Вывод всех пицц и ввод ИД пиццы для покупки
+                                pizzasTableService = new PizzasTableService();
+                                foreach (var pizza in pizzasTableService.SelectPizzas())
+                                {
+                                    System.Console.WriteLine($"Id - {pizza.Id}");
+                                    System.Console.WriteLine($"Название - {pizza.Name}");
+                                    System.Console.WriteLine($"Ингредиенты - {pizza.Description}");
+                                    System.Console.WriteLine($"Цена - {pizza.Cost}");
+                                    System.Console.WriteLine($"Размер - {pizza.Size}");
+                                    System.Console.WriteLine();
+                                }
                                 break;
                             case 2:
-                                // Вывод корзины
+                                List<Basket> baskets = GetBaskets();
+                                int basketId = 0;
+                                foreach (var basket in baskets)
+                                {
+                                    if (basket.UserId == user.Id)
+                                    {
+                                         basketId = basket.Id;
+                                    }
+                                }
+                                basketsAndPizzasTableService = new BasketsAndPizzasTableService();
+                                List<int[]> values = basketsAndPizzasTableService.SelectValues();
+                                pizzasTableService = new PizzasTableService();
+                                System.Console.Clear();
+                                System.Console.WriteLine("Корзина:");
+                                foreach (var value in values)
+                                {
+                                    if (basketId == value[0])
+                                    {
+                                        foreach (var pizza in pizzasTableService.SelectPizzas())
+                                        {
+                                            if (value[1] == pizza.Id)
+                                            {
+                                                System.Console.WriteLine($"Название - {pizza.Name}");
+                                                System.Console.WriteLine($"Ингредиенты - {pizza.Description}");
+                                                System.Console.WriteLine($"Цена - {pizza.Cost}");
+                                                System.Console.WriteLine($"Размер - {pizza.Size}");
+                                                System.Console.WriteLine();
+                                            }
+                                        }
+                                    }
+                                }
                                 break;
                             case 3:
                                 System.Console.Clear();
@@ -180,6 +222,7 @@ namespace PizzaApp.Console
                 FullName = name,
                 Password = password,
                 PhoneNumber = number,
+                Money = 0
             };
 
         }
@@ -193,9 +236,21 @@ namespace PizzaApp.Console
             System.Console.WriteLine("Введите пароль");
             string password = System.Console.ReadLine();
 
-            // Поиск в БД подобного пользователя
-            return new User();
+            usersTableService = new UsersTableService();
+            List<User> users = usersTableService.SelectUsers();
+            foreach (var user in users)
+            {
+                if (user.Login == login && user.Password == password) {
+                    return user;
+                }
+            }
+            throw new Exception("Пользователь не найден");
         }
 
+        public static List<Basket> GetBaskets()
+        {
+            basketsTableService = new BasketsTableService();
+            return basketsTableService.SelectBaskets();
+        }
     }
 }

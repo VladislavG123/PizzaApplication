@@ -5,7 +5,7 @@ namespace PizzaApp.Models
     public class Basket
     {
         public int Id { get; set; }
-        public List<Pizza> Products { get; set; }
-        public User User { get; set; }
+        public List<int> PizzaId { get; set; }  
+        public int UserId { get; set; }
     }
 }

@@ -62,10 +62,7 @@ namespace PizzaApp.Services
                 User.PhoneNumber = msg.Text.Substring(9);
                 answer = User.PhoneNumber;
             }
-            else if (msg.Text == "/vlad" || msg.Text == "/влад")
-            {
-                answer = "Лучший!";
-            }
+            
             else
             {
                 answer = "Неверный ввод!";

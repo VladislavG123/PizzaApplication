@@ -94,7 +94,7 @@ namespace PizzaApp.Console
                                 int pizzaNumber = 0;
                                 while (true)
                                 {
-                                    System.Console.WriteLine("Введите номер пиццы");    
+                                    System.Console.WriteLine("Введите номер пиццы");
                                     if (int.TryParse(System.Console.ReadLine(), out int result))
                                     {
                                         foreach (var pizza in pizzasTableService.SelectPizzas())
@@ -135,7 +135,7 @@ namespace PizzaApp.Console
                                 {
                                     if (basket.UserId == user.Id)
                                     {
-                                         basketId = basket.Id;
+                                        basketId = basket.Id;
                                     }
                                 }
                                 basketsAndPizzasTableService = new BasketsAndPizzasTableService();
@@ -183,6 +183,25 @@ namespace PizzaApp.Console
 
                                 break;
                             case 4:
+                                System.Console.WriteLine("Введите платежное средство");
+                                System.Console.WriteLine("1- Карта");
+                                System.Console.WriteLine("2- Деньги аккаунта");
+                                while (true)
+                                {
+                                    if (int.TryParse(System.Console.ReadLine(), out chouse))
+                                    {
+                                        if (chouse == 1)
+                                        {
+                                            
+                                        }
+                                        else if (chouse ==2)
+                                        {
+
+                                        }
+                                    }
+                                }
+
+
                                 break;
                             case 5:
                                 return;
@@ -467,7 +486,8 @@ namespace PizzaApp.Console
             List<User> users = usersTableService.SelectUsers();
             foreach (var user in users)
             {
-                if (user.Login == login && user.Password == password) {
+                if (user.Login == login && user.Password == password)
+                {
                     return user;
                 }
             }

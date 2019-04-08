@@ -10,3 +10,9 @@ C:\Users\Vlad\Source\Repos\VladislavG123\PizzaApplication\PizzaApplication.Model
 C:\Users\Vlad\Source\Repos\VladislavG123\PizzaApplication\PizzaApplication.Models\obj\Debug\PizzaApplication.Models.csproj.CoreCompileInputs.cache
 C:\Users\Vlad\Source\Repos\VladislavG123\PizzaApplication\PizzaApplication.Models\obj\Debug\PizzaApplication.Models.dll
 C:\Users\Vlad\Source\Repos\VladislavG123\PizzaApplication\PizzaApplication.Models\obj\Debug\PizzaApplication.Models.pdb
+C:\Users\гороховв.CORP\Source\Repos\PizzaApplication\PizzaApplication.Models\bin\Debug\PizzaApplication.Models.dll
+C:\Users\гороховв.CORP\Source\Repos\PizzaApplication\PizzaApplication.Models\bin\Debug\PizzaApplication.Models.pdb
+C:\Users\гороховв.CORP\Source\Repos\PizzaApplication\PizzaApplication.Models\obj\Debug\PizzaApplication.Models.csprojAssemblyReference.cache
+C:\Users\гороховв.CORP\Source\Repos\PizzaApplication\PizzaApplication.Models\obj\Debug\PizzaApplication.Models.csproj.CoreCompileInputs.cache
+C:\Users\гороховв.CORP\Source\Repos\PizzaApplication\PizzaApplication.Models\obj\Debug\PizzaApplication.Models.dll
+C:\Users\гороховв.CORP\Source\Repos\PizzaApplication\PizzaApplication.Models\obj\Debug\PizzaApplication.Models.pdb

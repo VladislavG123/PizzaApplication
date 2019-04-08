@@ -1,0 +1,11 @@
+C:\Users\гороховв.CORP\Source\Repos\PizzaApplication\PizzaApplication.DataAccess\obj\Debug\PizzaApplication.DataAccess.csprojAssemblyReference.cache
+C:\Users\гороховв.CORP\Source\Repos\PizzaApplication\PizzaApplication.DataAccess\obj\Debug\PizzaApplication.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\гороховв.CORP\Source\Repos\PizzaApplication\PizzaApplication.DataAccess\bin\Debug\PizzaApplication.mdf
+C:\Users\гороховв.CORP\Source\Repos\PizzaApplication\PizzaApplication.DataAccess\bin\Debug\PizzaApplication_log.ldf
+C:\Users\гороховв.CORP\Source\Repos\PizzaApplication\PizzaApplication.DataAccess\bin\Debug\PizzaApplication.DataAccess.dll
+C:\Users\гороховв.CORP\Source\Repos\PizzaApplication\PizzaApplication.DataAccess\bin\Debug\PizzaApplication.DataAccess.pdb
+C:\Users\гороховв.CORP\Source\Repos\PizzaApplication\PizzaApplication.DataAccess\bin\Debug\PizzaApplication.Models.dll
+C:\Users\гороховв.CORP\Source\Repos\PizzaApplication\PizzaApplication.DataAccess\bin\Debug\PizzaApplication.Models.pdb
+C:\Users\гороховв.CORP\Source\Repos\PizzaApplication\PizzaApplication.DataAccess\obj\Debug\PizzaApplication.DataAccess.csproj.CopyComplete
+C:\Users\гороховв.CORP\Source\Repos\PizzaApplication\PizzaApplication.DataAccess\obj\Debug\PizzaApplication.DataAccess.dll
+C:\Users\гороховв.CORP\Source\Repos\PizzaApplication\PizzaApplication.DataAccess\obj\Debug\PizzaApplication.DataAccess.pdb

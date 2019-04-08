@@ -49,7 +49,7 @@ namespace PizzaApplication.DataAccess
                             PhoneNumber = phoneNumber,
                             FullName = fullName,
                             Money = money,
-                            CardId = cardId
+                            BankCardId = cardId
                         });
                     }
                 }

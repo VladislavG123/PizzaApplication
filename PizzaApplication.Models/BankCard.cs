@@ -6,7 +6,9 @@ namespace PizzaApp.Models
     {
         public int Id { get; set; }
         public string Number { get; set; }
-        public int Cvc { get; set; }
+        public string CardHolderName { get; set; }
+        public int CVV { get; set; }
         public DateTime Validity { get; set; }
+        public int MoneyAmount { get; set; }
     }
 }

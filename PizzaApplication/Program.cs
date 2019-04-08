@@ -178,6 +178,7 @@ namespace PizzaApp.Console
 
         public static User Registration()
         {
+            User user;
             string login;
             System.Console.WriteLine("Введите логин");
             while (true)
@@ -186,9 +187,28 @@ namespace PizzaApp.Console
                 if (!(login is null) && login.Length >= 3)
                 {
                     // Проверка на существование пользователя с таким же логином
-                    break;
+                    usersTableService = new UsersTableService();
+                    bool isExist = false;
+                    foreach (var logins in usersTableService.SelectUsers())
+                    {
+                        if (login == logins.Login)
+                        {
+                            isExist = true;
+                        }
+                    }
+                    if (!isExist)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Пользователь с таким логином уже существует");
+                    }
                 }
-                System.Console.WriteLine("Логин должен состоять как минимум из 3-х символов");
+                else
+                {
+                    System.Console.WriteLine("Логин должен состоять как минимум из 3-х символов");
+                }
             }
 
             string name;
@@ -249,27 +269,169 @@ namespace PizzaApp.Console
                 System.Console.WriteLine("Введите еще раз!");
             }
 
-            System.Console.WriteLine("Отлично, вы прошли процедуру регистрации!");
+            System.Console.WriteLine("Хотите ли вы привязать банковскую карту?(Введите да или нет)");
 
-            User user = new User
+            string bankCardChoice = System.Console.ReadLine();
+            bankCardChoice.ToLower();
+
+            if (bankCardChoice == "да")
             {
-                Login = login,
-                FullName = name,
-                Password = password,
-                PhoneNumber = number,
-                Money = 0
-            };
-            usersTableService.InsertUser(user);
-            int userId;
-            foreach (var obj in usersTableService.SelectUsers())
-            {
-                if (obj.Login == user.Login && obj.Password == user.Password)
+                BankCard bankCard = new BankCard();
+                while (true)
                 {
-                    userId = obj.Id;
-                    basketsTableService.InsertBasket(new Basket { UserId = userId });
+                    System.Console.WriteLine("Введите номер банковской карточки(без пробелов)");
+                    string bankCardNumber = System.Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(bankCardNumber))
+                    {
+                        System.Console.WriteLine("Отсутствует номер");
+                    }
+                    else
+                    {
+                        if (int.TryParse(bankCardNumber, out int result) && bankCardNumber.Length == 16)
+                        {
+                            bankCard.Number = bankCardNumber;
+                            break;
+                        }
+                        else
+                        {
+                            System.Console.WriteLine("Некорректные данные");
+                        }
+                    }
                 }
+
+                while (true)
+                {
+                    System.Console.WriteLine("Введите имя держателя карты");
+                    string cardHolderName = System.Console.ReadLine();
+                    if (!string.IsNullOrWhiteSpace(cardHolderName))
+                    {
+                        bankCard.CardHolderName = cardHolderName;
+                        break;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Некорректные данные");
+                    }
+                }
+
+                while (true)
+                {
+                    System.Console.WriteLine("Введите CVV-код(последние 3 цифры на обратной стороне карты)");
+                    string cvvString = System.Console.ReadLine();
+                    int cvvCode;
+                    if (int.TryParse(cvvString, out int cvv) && cvvString.Length == 3)
+                    {
+                        cvvCode = cvv;
+                        bankCard.CVV = cvvCode;
+                        break;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Некорректные данные");
+                    }
+                }
+
+                while (true)
+                {
+                    System.Console.WriteLine("Введите срок действия карты(мм/гг)");
+                    string validity = System.Console.ReadLine();
+                    if (validity.Length == 5 && validity[2] == '/')
+                    {
+                        string[] data = validity.Split('/');
+                        if (int.TryParse(data[0], out int month) && int.TryParse(data[1], out int year))
+                        {
+                            if (month >= 1 && month <= 12)
+                            {
+                                bankCard.Validity = new DateTime(year, month, 0);
+                                break;
+                            }
+                            else
+                            {
+                                System.Console.WriteLine("Некорректный месяц");
+                            }
+                        }
+                        else
+                        {
+                            System.Console.WriteLine("Некорректные данные");
+                        }
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Некорректные данные");
+                    }
+                }
+                while (true)
+                {
+                    System.Console.WriteLine("Введите количество денег на карте");
+                    if (int.TryParse(System.Console.ReadLine(), out int moneyAmount) && moneyAmount >= 0)
+                    {
+                        bankCard.MoneyAmount = moneyAmount;
+                        break;
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("Некорректные данные");
+                    }
+                }
+                BankCardTableService bankCardTableService = new BankCardTableService();
+                bankCardTableService.InsertBankCard(bankCard);
+
+                int bankCardId;
+                foreach (var card in bankCardTableService.SelectCards())
+                {
+                    if (card.Number == bankCard.Number)
+                    {
+                        bankCardId = card.Id;
+
+                        user = new User
+                        {
+                            Login = login,
+                            FullName = name,
+                            Password = password,
+                            PhoneNumber = number,
+                            Money = 0,
+                            BankCardId = bankCardId
+                        };
+                        usersTableService.InsertUser(user);
+                        int userId;
+                        foreach (var obj in usersTableService.SelectUsers())
+                        {
+                            if (obj.Login == user.Login && obj.Password == user.Password)
+                            {
+                                userId = obj.Id;
+                                basketsTableService.InsertBasket(new Basket { UserId = userId });
+                            }
+                        }
+                        return user;
+                    }
+                }
+
             }
-            return user;
+            else if (bankCardChoice == "нет")
+            {
+                System.Console.WriteLine("Банковская карта не будет привязана");
+                user = new User
+                {
+                    Login = login,
+                    FullName = name,
+                    Password = password,
+                    PhoneNumber = number,
+                    Money = 0
+                };
+                usersTableService.InsertUser(user);
+                int userId;
+                foreach (var obj in usersTableService.SelectUsers())
+                {
+                    if (obj.Login == user.Login && obj.Password == user.Password)
+                    {
+                        userId = obj.Id;
+                        basketsTableService.InsertBasket(new Basket { UserId = userId });
+                    }
+                }
+                return user;
+            }
+
+            System.Console.WriteLine("Отлично, вы прошли процедуру регистрации!");
         }
 
 

@@ -18,8 +18,10 @@ namespace PizzaApp.Console
             System.Console.WriteLine("Добро пожаловать в PizzaApplication!");
             System.Console.WriteLine("\nЕсли вы уже прошли регистрацию, введите 1.");
             System.Console.WriteLine("Если Вы хотите создать новый аккаунт введите 2.");
+            System.Console.WriteLine("Если Вы хотите создать новый аккаунт через телеграм введите 3.");
             const int AUTHORIZATION_CHOUSE = 1;
             const int REGISTRATION_CHOUSE = 2;
+            const int TELEGRAM_CHOUSE = 3;
             int chouse;
             User user;
             while (true)
@@ -28,12 +30,31 @@ namespace PizzaApp.Console
                 {
                     if (chouse == AUTHORIZATION_CHOUSE)
                     {
-                        user = Authorization();
+                        try
+                        {
+                            user = Authorization();
+                        }
+                        catch (Exception exception)
+                        {
+                            System.Console.WriteLine("Введите еще раз!");
+                            System.Console.WriteLine(exception.Message);
+                            continue;
+                        }
                         break;
                     }
                     else if (chouse == REGISTRATION_CHOUSE)
                     {
                         user = Registration();
+                        break;
+                    }
+                    else if (chouse == TELEGRAM_CHOUSE)
+                    {
+                        System.Console.WriteLine("Напишите нашему телеграм боту PizzaAppBot");
+                        TelegramService telegram = new TelegramService();
+
+                        user = telegram.Start();
+                        System.Console.WriteLine("После регистрации введите Enter");
+                        System.Console.Read();
                         break;
                     }
                     System.Console.WriteLine("Есть только 2 варианта ответа!");
@@ -45,7 +66,7 @@ namespace PizzaApp.Console
             while (true)
             {
                 System.Console.Clear();
-                System.Console.WriteLine($"\t{user.FullName} Денег на счету:{user.Money}");
+                System.Console.WriteLine($"\t{user.FullName}, Денег на счету:{user.Money}");
                 System.Console.WriteLine("Главное меню.");
                 System.Console.WriteLine("\n(1)-Добавить пиццу в корзину.");
                 System.Console.WriteLine("(2)-Посмотреть корзину");
@@ -73,7 +94,7 @@ namespace PizzaApp.Console
                                 int pizzaNumber = 0;
                                 while (true)
                                 {
-                                    System.Console.WriteLine("Введите номер пиццы");    
+                                    System.Console.WriteLine("Введите номер пиццы");
                                     if (int.TryParse(System.Console.ReadLine(), out int result))
                                     {
                                         foreach (var pizza in pizzasTableService.SelectPizzas())
@@ -114,7 +135,7 @@ namespace PizzaApp.Console
                                 {
                                     if (basket.UserId == user.Id)
                                     {
-                                         basketId = basket.Id;
+                                        basketId = basket.Id;
                                     }
                                 }
                                 basketsAndPizzasTableService = new BasketsAndPizzasTableService();
@@ -162,6 +183,25 @@ namespace PizzaApp.Console
 
                                 break;
                             case 4:
+                                System.Console.WriteLine("Введите платежное средство");
+                                System.Console.WriteLine("1- Карта");
+                                System.Console.WriteLine("2- Деньги аккаунта");
+                                while (true)
+                                {
+                                    if (int.TryParse(System.Console.ReadLine(), out chouse))
+                                    {
+                                        if (chouse == 1)
+                                        {
+                                            
+                                        }
+                                        else if (chouse ==2)
+                                        {
+
+                                        }
+                                    }
+                                }
+
+
                                 break;
                             case 5:
                                 return;
@@ -430,8 +470,7 @@ namespace PizzaApp.Console
                 }
                 return user;
             }
-
-            System.Console.WriteLine("Отлично, вы прошли процедуру регистрации!");
+            return new User();
         }
 
 
@@ -447,7 +486,8 @@ namespace PizzaApp.Console
             List<User> users = usersTableService.SelectUsers();
             foreach (var user in users)
             {
-                if (user.Login == login && user.Password == password) {
+                if (user.Login == login && user.Password == password)
+                {
                     return user;
                 }
             }

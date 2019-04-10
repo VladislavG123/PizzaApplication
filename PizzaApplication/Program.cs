@@ -49,12 +49,22 @@ namespace PizzaApp.Console
                     }
                     else if (chouse == TELEGRAM_CHOUSE)
                     {
-                        System.Console.WriteLine("Напишите нашему телеграм боту PizzaAppBot");
-                        TelegramService telegram = new TelegramService();
+                        while (true)
+                        {
+                            System.Console.WriteLine("Напишите нашему телеграм боту PizzaAppBot");
+                            TelegramService telegram = new TelegramService();
 
-                        user = telegram.Start();
-                        System.Console.WriteLine("После регистрации введите Enter");
-                        System.Console.Read();
+                            user = telegram.Start();
+                            System.Console.WriteLine("После регистрации введите Enter");
+                            System.Console.Read();
+                            if (user.Login is null || user.FullName is null || user.Password is null || user.PhoneNumber is null)
+                            {
+                                System.Console.WriteLine("Данные введены неверно!\nНапишите нашему боту еще раз!");
+                            }
+                            else
+                                break;
+
+                        }
                         break;
                     }
                     System.Console.WriteLine("Есть только 2 варианта ответа!");
@@ -192,9 +202,9 @@ namespace PizzaApp.Console
                                     {
                                         if (chouse == 1)
                                         {
-                                            
+
                                         }
-                                        else if (chouse ==2)
+                                        else if (chouse == 2)
                                         {
 
                                         }

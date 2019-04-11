@@ -12,9 +12,7 @@ namespace PizzaApplication.DataAccess
 
         public UsersTableService()
         {
-            _connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;
-                                AttachDbFilename=PIZZAAPPLICATION.DATAACCESS\PIZZAAPPLICATION.MDF;
-                                Integrated Security=True";
+            _connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\User\source\repos\PizzaApplication\PizzaApplication.DataAccess\PizzaApplication.mdf;Integrated Security=True";
         }
 
         public List<User> SelectUsers()
@@ -39,7 +37,6 @@ namespace PizzaApplication.DataAccess
                         string phoneNumber = sqlDataReader["PhoneNumber"].ToString();
                         string fullName = sqlDataReader["FullName"].ToString();
                         int money = (int)sqlDataReader["Money"];
-                        int? cardId = (int)sqlDataReader["CardId"];
 
                         data.Add(new User()
                         {
@@ -49,7 +46,6 @@ namespace PizzaApplication.DataAccess
                             PhoneNumber = phoneNumber,
                             FullName = fullName,
                             Money = money,
-                            BankCardId = cardId
                         });
                     }
                 }
@@ -101,18 +97,11 @@ namespace PizzaApplication.DataAccess
                     moneyParameter.SqlDbType = System.Data.SqlDbType.Int;
                     moneyParameter.SqlValue = user.Money;
 
-                    var cardIdParameter = new SqlParameter();
-                    cardIdParameter.ParameterName = "@cardId";
-                    cardIdParameter.SqlDbType = System.Data.SqlDbType.Int;
-                    cardIdParameter.SqlValue = user.Money;
-
-
                     command.Parameters.Add(passwordParameter);
                     command.Parameters.Add(loginParameter);
                     command.Parameters.Add(phoneNumberParameter);
                     command.Parameters.Add(fullNameParameter);
                     command.Parameters.Add(moneyParameter);
-                    command.Parameters.Add(cardIdParameter);
 
                     command.Transaction = transaction;
 
@@ -133,6 +122,25 @@ namespace PizzaApplication.DataAccess
                 catch (Exception exception)
                 {
                     transaction?.Rollback();
+                    throw;
+                }
+            }
+        }
+        public void UpdateUser(int id, int money)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            using (var command = connection.CreateCommand())
+            {
+                try
+                {
+                    connection.Open();
+                    transaction = connection.BeginTransaction();
+                    command.CommandText = $"update Users set Money = {money} where id = {id}";
+                    command.Transaction = transaction;
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
                     throw;
                 }
             }

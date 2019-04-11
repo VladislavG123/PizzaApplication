@@ -8,6 +8,5 @@
         public string PhoneNumber { get; set; }
         public string FullName { get; set; }
         public int Money { get; set; }
-        public int? BankCardId { get; set; }
     }
 }

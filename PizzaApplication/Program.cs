@@ -8,10 +8,10 @@ namespace PizzaApp.Console
 {
     class Program
     {
-        static UsersTableService usersTableService;
-        static BasketsTableService basketsTableService;
-        static BasketsAndPizzasTableService basketsAndPizzasTableService;
-        static PizzasTableService pizzasTableService;
+        static UsersTableService usersTableService = new UsersTableService();
+        static BasketsTableService basketsTableService = new BasketsTableService();
+        static BasketsAndPizzasTableService basketsAndPizzasTableService = new BasketsAndPizzasTableService();
+        static PizzasTableService pizzasTableService = new PizzasTableService();
 
         static void Main(string[] args)
         {
@@ -81,7 +81,6 @@ namespace PizzaApp.Console
                         switch (chouse)
                         {
                             case 1:
-                                pizzasTableService = new PizzasTableService();
                                 foreach (var pizza in pizzasTableService.SelectPizzas())
                                 {
                                     System.Console.WriteLine($"Номер - {pizza.Id}");
@@ -138,33 +137,39 @@ namespace PizzaApp.Console
                                         basketId = basket.Id;
                                     }
                                 }
-                                basketsAndPizzasTableService = new BasketsAndPizzasTableService();
-                                List<int[]> values = basketsAndPizzasTableService.SelectValues();
-                                pizzasTableService = new PizzasTableService();
-                                System.Console.Clear();
-                                System.Console.WriteLine("Корзина:");
-                                foreach (var value in values)
+                                if (baskets.Count != 0)
                                 {
-                                    if (basketId == value[0])
+                                    List<int[]> values = basketsAndPizzasTableService.SelectValues();
+                                    System.Console.Clear();
+                                    System.Console.WriteLine("Корзина:");
+                                    foreach (var value in values)
                                     {
-                                        foreach (var pizza in pizzasTableService.SelectPizzas())
+                                        if (basketId == value[0])
                                         {
-                                            if (value[1] == pizza.Id)
+                                            foreach (var pizza in pizzasTableService.SelectPizzas())
                                             {
-                                                System.Console.WriteLine($"Название - {pizza.Name}");
-                                                System.Console.WriteLine($"Ингредиенты - {pizza.Description}");
-                                                System.Console.WriteLine($"Цена - {pizza.Cost}");
-                                                System.Console.WriteLine($"Размер - {pizza.Size}");
-                                                System.Console.WriteLine();
+                                                if (value[1] == pizza.Id)
+                                                {
+                                                    System.Console.WriteLine($"Название - {pizza.Name}");
+                                                    System.Console.WriteLine($"Ингредиенты - {pizza.Description}");
+                                                    System.Console.WriteLine($"Цена - {pizza.Cost}");
+                                                    System.Console.WriteLine($"Размер - {pizza.Size}");
+                                                    System.Console.WriteLine();
+                                                }
                                             }
                                         }
                                     }
                                 }
+                                else
+                                {
+                                    System.Console.WriteLine("Корзина пуста");
+                                }
+                                System.Console.WriteLine("Нажмите Enter для продолжения");
                                 break;
                             case 3:
                                 System.Console.Clear();
                                 System.Console.WriteLine("Вас приветствует банк HalyavaBank");
-                                System.Console.WriteLine("Введите количество денег которое хотите получить");
+                                System.Console.WriteLine("Введите количество денег которое хотите получить(не более 30000)");
                                 while (true)
                                 {
                                     if (int.TryParse(System.Console.ReadLine(), out int amount) && amount > 0)
@@ -172,6 +177,7 @@ namespace PizzaApp.Console
                                         if (amount < 30000)
                                         {
                                             user.Money += amount;
+                                            usersTableService.UpdateUser(user.Id, user.Money);
                                             System.Console.WriteLine("Средства успешно получены!(Enter - для выхода в меню)\n");
                                             break;
                                         }
@@ -183,25 +189,29 @@ namespace PizzaApp.Console
 
                                 break;
                             case 4:
-                                System.Console.WriteLine("Введите платежное средство");
-                                System.Console.WriteLine("1- Карта");
-                                System.Console.WriteLine("2- Деньги аккаунта");
-                                while (true)
+                                int cost = 0;
+                                foreach (var pizza in pizzasTableService.SelectPizzas())
                                 {
-                                    if (int.TryParse(System.Console.ReadLine(), out chouse))
+                                    cost += pizza.Cost;
+                                }
+                                if (cost > 0)
+                                {
+                                    if (cost <= user.Money)
                                     {
-                                        if (chouse == 1)
-                                        {
-                                            
-                                        }
-                                        else if (chouse ==2)
-                                        {
-
-                                        }
+                                        user.Money -= cost;
+                                        usersTableService.UpdateUser(user.Id, user.Money);
+                                        System.Console.WriteLine($"Успешно оплачено! На вашем счету {user.Money}");
+                                    }
+                                    else
+                                    {
+                                        System.Console.WriteLine("Не достаточно средств для списания");
                                     }
                                 }
-
-
+                                else
+                                {
+                                    System.Console.WriteLine("Ваша корзина пуста");
+                                }
+                                System.Console.WriteLine("Нажмите Enter для продолжения");
                                 break;
                             case 5:
                                 return;
@@ -218,7 +228,7 @@ namespace PizzaApp.Console
 
         public static User Registration()
         {
-            User user;
+            User user = new User();
             string login;
             System.Console.WriteLine("Введите логин");
             while (true)
@@ -226,8 +236,6 @@ namespace PizzaApp.Console
                 login = System.Console.ReadLine();
                 if (!(login is null) && login.Length >= 3)
                 {
-                    // Проверка на существование пользователя с таким же логином
-                    usersTableService = new UsersTableService();
                     bool isExist = false;
                     foreach (var logins in usersTableService.SelectUsers())
                     {
@@ -309,171 +317,26 @@ namespace PizzaApp.Console
                 System.Console.WriteLine("Введите еще раз!");
             }
 
-            System.Console.WriteLine("Хотите ли вы привязать банковскую карту?(Введите да или нет)");
-
-            string bankCardChoice = System.Console.ReadLine();
-            bankCardChoice.ToLower();
-
-            if (bankCardChoice == "да")
+            user = new User
             {
-                BankCard bankCard = new BankCard();
-                while (true)
-                {
-                    System.Console.WriteLine("Введите номер банковской карточки(без пробелов)");
-                    string bankCardNumber = System.Console.ReadLine();
-                    if (string.IsNullOrWhiteSpace(bankCardNumber))
-                    {
-                        System.Console.WriteLine("Отсутствует номер");
-                    }
-                    else
-                    {
-                        if (int.TryParse(bankCardNumber, out int result) && bankCardNumber.Length == 16)
-                        {
-                            bankCard.Number = bankCardNumber;
-                            break;
-                        }
-                        else
-                        {
-                            System.Console.WriteLine("Некорректные данные");
-                        }
-                    }
-                }
-
-                while (true)
-                {
-                    System.Console.WriteLine("Введите имя держателя карты");
-                    string cardHolderName = System.Console.ReadLine();
-                    if (!string.IsNullOrWhiteSpace(cardHolderName))
-                    {
-                        bankCard.CardHolderName = cardHolderName;
-                        break;
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Некорректные данные");
-                    }
-                }
-
-                while (true)
-                {
-                    System.Console.WriteLine("Введите CVV-код(последние 3 цифры на обратной стороне карты)");
-                    string cvvString = System.Console.ReadLine();
-                    int cvvCode;
-                    if (int.TryParse(cvvString, out int cvv) && cvvString.Length == 3)
-                    {
-                        cvvCode = cvv;
-                        bankCard.CVV = cvvCode;
-                        break;
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Некорректные данные");
-                    }
-                }
-
-                while (true)
-                {
-                    System.Console.WriteLine("Введите срок действия карты(мм/гг)");
-                    string validity = System.Console.ReadLine();
-                    if (validity.Length == 5 && validity[2] == '/')
-                    {
-                        string[] data = validity.Split('/');
-                        if (int.TryParse(data[0], out int month) && int.TryParse(data[1], out int year))
-                        {
-                            if (month >= 1 && month <= 12)
-                            {
-                                bankCard.Validity = new DateTime(year, month, 0);
-                                break;
-                            }
-                            else
-                            {
-                                System.Console.WriteLine("Некорректный месяц");
-                            }
-                        }
-                        else
-                        {
-                            System.Console.WriteLine("Некорректные данные");
-                        }
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Некорректные данные");
-                    }
-                }
-                while (true)
-                {
-                    System.Console.WriteLine("Введите количество денег на карте");
-                    if (int.TryParse(System.Console.ReadLine(), out int moneyAmount) && moneyAmount >= 0)
-                    {
-                        bankCard.MoneyAmount = moneyAmount;
-                        break;
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Некорректные данные");
-                    }
-                }
-                BankCardTableService bankCardTableService = new BankCardTableService();
-                bankCardTableService.InsertBankCard(bankCard);
-
-                int bankCardId;
-                foreach (var card in bankCardTableService.SelectCards())
-                {
-                    if (card.Number == bankCard.Number)
-                    {
-                        bankCardId = card.Id;
-
-                        user = new User
-                        {
-                            Login = login,
-                            FullName = name,
-                            Password = password,
-                            PhoneNumber = number,
-                            Money = 0,
-                            BankCardId = bankCardId
-                        };
-                        usersTableService.InsertUser(user);
-                        int userId;
-                        foreach (var obj in usersTableService.SelectUsers())
-                        {
-                            if (obj.Login == user.Login && obj.Password == user.Password)
-                            {
-                                userId = obj.Id;
-                                basketsTableService.InsertBasket(new Basket { UserId = userId });
-                            }
-                        }
-                        return user;
-                    }
-                }
-
-            }
-            else if (bankCardChoice == "нет")
+                Login = login,
+                FullName = name,
+                Password = password,
+                PhoneNumber = number,
+                Money = 0
+            };
+            usersTableService.InsertUser(user);
+            int userId;
+            foreach (var obj in usersTableService.SelectUsers())
             {
-                System.Console.WriteLine("Банковская карта не будет привязана");
-                user = new User
+                if (obj.Login == user.Login && obj.Password == user.Password)
                 {
-                    Login = login,
-                    FullName = name,
-                    Password = password,
-                    PhoneNumber = number,
-                    Money = 0
-                };
-                usersTableService.InsertUser(user);
-                int userId;
-                foreach (var obj in usersTableService.SelectUsers())
-                {
-                    if (obj.Login == user.Login && obj.Password == user.Password)
-                    {
-                        userId = obj.Id;
-                        basketsTableService.InsertBasket(new Basket { UserId = userId });
-                    }
+                    userId = obj.Id;
+                    basketsTableService.InsertBasket(new Basket { UserId = userId });
                 }
-                return user;
             }
-            return new User();
+            return user;
         }
-
-
         public static User Authorization()
         {
             System.Console.WriteLine("Введите логин");
@@ -482,7 +345,6 @@ namespace PizzaApp.Console
             System.Console.WriteLine("Введите пароль");
             string password = System.Console.ReadLine();
 
-            usersTableService = new UsersTableService();
             List<User> users = usersTableService.SelectUsers();
             foreach (var user in users)
             {
@@ -496,7 +358,6 @@ namespace PizzaApp.Console
 
         public static List<Basket> GetBaskets()
         {
-            basketsTableService = new BasketsTableService();
             return basketsTableService.SelectBaskets();
         }
     }

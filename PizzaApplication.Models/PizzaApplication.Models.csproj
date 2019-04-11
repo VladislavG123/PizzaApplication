@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BankCard.cs" />
     <Compile Include="Basket.cs" />
     <Compile Include="Pizza.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

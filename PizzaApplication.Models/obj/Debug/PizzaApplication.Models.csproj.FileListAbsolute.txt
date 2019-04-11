@@ -16,3 +16,9 @@ C:\Users\гороховв.CORP\Source\Repos\PizzaApplication\PizzaApplication.Mo
 C:\Users\гороховв.CORP\Source\Repos\PizzaApplication\PizzaApplication.Models\obj\Debug\PizzaApplication.Models.csproj.CoreCompileInputs.cache
 C:\Users\гороховв.CORP\Source\Repos\PizzaApplication\PizzaApplication.Models\obj\Debug\PizzaApplication.Models.dll
 C:\Users\гороховв.CORP\Source\Repos\PizzaApplication\PizzaApplication.Models\obj\Debug\PizzaApplication.Models.pdb
+C:\Users\User\source\repos\PizzaApplication\PizzaApplication.Models\bin\Debug\PizzaApplication.Models.dll
+C:\Users\User\source\repos\PizzaApplication\PizzaApplication.Models\bin\Debug\PizzaApplication.Models.pdb
+C:\Users\User\source\repos\PizzaApplication\PizzaApplication.Models\obj\Debug\PizzaApplication.Models.csprojAssemblyReference.cache
+C:\Users\User\source\repos\PizzaApplication\PizzaApplication.Models\obj\Debug\PizzaApplication.Models.csproj.CoreCompileInputs.cache
+C:\Users\User\source\repos\PizzaApplication\PizzaApplication.Models\obj\Debug\PizzaApplication.Models.dll
+C:\Users\User\source\repos\PizzaApplication\PizzaApplication.Models\obj\Debug\PizzaApplication.Models.pdb

@@ -12,9 +12,7 @@ namespace PizzaApplication.DataAccess
 
         public PizzasTableService()
         {
-            _connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;
-                                AttachDbFilename=PIZZAAPPLICATION.DATAACCESS\PIZZAAPPLICATION.MDF;
-                                Integrated Security=True";
+            _connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\User\source\repos\PizzaApplication\PizzaApplication.DataAccess\PizzaApplication.mdf;Integrated Security=True";
         }
 
         public List<Pizza> SelectPizzas()

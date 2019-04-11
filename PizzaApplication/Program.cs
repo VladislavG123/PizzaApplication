@@ -49,12 +49,22 @@ namespace PizzaApp.Console
                     }
                     else if (chouse == TELEGRAM_CHOUSE)
                     {
-                        System.Console.WriteLine("Напишите нашему телеграм боту PizzaAppBot");
-                        TelegramService telegram = new TelegramService();
+                        while (true)
+                        {
+                            System.Console.WriteLine("Напишите нашему телеграм боту PizzaAppBot");
+                            TelegramService telegram = new TelegramService();
 
-                        user = telegram.Start();
-                        System.Console.WriteLine("После регистрации введите Enter");
-                        System.Console.Read();
+                            user = telegram.Start();
+                            System.Console.WriteLine("После регистрации введите Enter");
+                            System.Console.Read();
+                            if (user.Login is null || user.FullName is null || user.Password is null || user.PhoneNumber is null)
+                            {
+                                System.Console.WriteLine("Данные введены неверно!\nНапишите нашему боту еще раз!");
+                            }
+                            else
+                                break;
+
+                        }
                         break;
                     }
                     System.Console.WriteLine("Есть только 2 варианта ответа!");
@@ -198,6 +208,7 @@ namespace PizzaApp.Console
                                 {
                                     if (cost <= user.Money)
                                     {
+<<<<<<< HEAD
                                         user.Money -= cost;
                                         usersTableService.UpdateUser(user.Id, user.Money);
                                         System.Console.WriteLine($"Успешно оплачено! На вашем счету {user.Money}");
@@ -205,6 +216,16 @@ namespace PizzaApp.Console
                                     else
                                     {
                                         System.Console.WriteLine("Не достаточно средств для списания");
+=======
+                                        if (chouse == 1)
+                                        {
+
+                                        }
+                                        else if (chouse == 2)
+                                        {
+
+                                        }
+>>>>>>> 41297470d4f9b8172eef3dcf13c679bf56a38472
                                     }
                                 }
                                 else
